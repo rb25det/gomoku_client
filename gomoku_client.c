@@ -9,7 +9,7 @@
 void initializeBoard(char board[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            board[i][j] = ' ';
+            board[i][j] = '0';
         }
     }
 }
@@ -81,11 +81,13 @@ int main(void) {
 		// 相手の手を代入(追加事項、削除不可)
 		if(isFirst){
 			sscanf(buffer, "%d,%d", &row, &col);
+			isFirst = FALSE;
 		}else{
 			sscanf(buffer2, "%d,%d", &row, &col);
 		}
 		row--;
 		col--;
+		board[row][col] = '1';
 
 		// 禁じ手の判断(追加事項、削除不可)
 
