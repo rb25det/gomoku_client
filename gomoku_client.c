@@ -95,8 +95,8 @@ int main(void) {
 		if (checkDraw(board)) {
 			const char drow[1024] = "The game is a draw!";
 			send(s, drow, strlen(drow), 0);
-            break;
-        }
+			break;
+		}
 
 		//自分の手を決定(今後変更)
 		printf("送信メッセージを入力(qで終了)");
