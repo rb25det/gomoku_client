@@ -91,18 +91,22 @@ int main(void) {
 
 		// 禁じ手の判断(追加事項、削除不可)
 
-		// 引き分けの場合(追加条項、削除不可)
+		// 引き分け判断(追加条項、削除不可)
 		if (checkDraw(board)) {
             const char drow[1024] = "The game is a draw!";
 			send(s, drow, strlen(drow), 0);
             break;
         }
 
+		//自分の手を決定(今後変更)
 		printf("送信メッセージを入力(qで終了)");
 		scanf("%s", msg);
 		if(msg[0] == 'q' || msg[0] == 'Q'){
 			break;
 		}
+
+		//勝利判断(今後追加)
+
 
 		//サーバにデータを送信
 		send(s, msg, strlen(msg), 0);
