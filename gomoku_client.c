@@ -93,7 +93,7 @@ int main(void) {
 
 		// ˆø‚«•ª‚¯”»’f(’Ç‰Áğ€Aíœ•s‰Â)
 		if (checkDraw(board)) {
-            const char drow[1024] = "The game is a draw!";
+			const char drow[1024] = "The game is a draw!";
 			send(s, drow, strlen(drow), 0);
             break;
         }
