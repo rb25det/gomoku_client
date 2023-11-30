@@ -18,7 +18,7 @@ void initializeBoard(char board[SIZE][SIZE]) {
 int checkDraw(char board[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            if (board[i][j] == ' ') {
+            if (board[i][j] == '0') {
                 return 0; // ボードがまだ埋まっていない
             }
         }
@@ -78,36 +78,40 @@ int main(void) {
 		char buffer2[1024];
 		memset(buffer2, 0, sizeof(buffer2));
 		
-		// 相手の手を代入(追加事項、削除不可)
 		if(isFirst){
-			sscanf(buffer, "%d,%d", &row, &col);
-			isFirst = FALSE;
+			//名前の入力
+			printf("送信メッセージを入力(qで終了)");
+			scanf("%s", msg);
+			if(msg[0] == 'q' || msg[0] == 'Q'){
+				break;
+			}
 		}else{
+			// 相手の手を代入(追加事項、削除不可)
 			sscanf(buffer2, "%d,%d", &row, &col);
+			row--;
+			col--;
+			board[row][col] = '1';
+
+			// 禁じ手の判断(追加事項、削除不可)
+
+			// 引き分け判断(追加条項、削除不可)
+			if (checkDraw(board)) {
+				const char drow[1024] = "The game is a draw!";
+				send(s, drow, strlen(drow), 0);
+				break;
+			}
+
+			//自分の手を決定(今後変更)
+			printf("送信メッセージを入力(qで終了)");
+			scanf("%s", msg);
+			if(msg[0] == 'q' || msg[0] == 'Q'){
+				break;
+			}
+
+			//勝利判断(今後追加)
+
+
 		}
-		row--;
-		col--;
-		board[row][col] = '1';
-
-		// 禁じ手の判断(追加事項、削除不可)
-
-		// 引き分け判断(追加条項、削除不可)
-		if (checkDraw(board)) {
-			const char drow[1024] = "The game is a draw!";
-			send(s, drow, strlen(drow), 0);
-			break;
-		}
-
-		//自分の手を決定(今後変更)
-		printf("送信メッセージを入力(qで終了)");
-		scanf("%s", msg);
-		if(msg[0] == 'q' || msg[0] == 'Q'){
-			break;
-		}
-
-		//勝利判断(今後追加)
-
-
 		//サーバにデータを送信
 		send(s, msg, strlen(msg), 0);
 
