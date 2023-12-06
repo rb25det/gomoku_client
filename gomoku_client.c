@@ -133,7 +133,6 @@ int main(void) {
 
 	boolean isFirst = TRUE;	//名前入力かどうかの判定
 	boolean Advance;		//先攻かどうか
-	boolean Second;			//後攻かどうか
 	int row, col;			//打った手の位置
 	char your = 1;		//自分の手を1に設定
 	char com = 2;			//相手の手を２に設定
@@ -141,10 +140,8 @@ int main(void) {
 	//先攻か後攻か(追加条項、削除不可)
 	if(port == 12345){
 		Advance = TRUE;
-		Second = FALSE;
 	}else{
 		Advance = FALSE;
-		Second = TRUE;
 	}
 	
 	//サーバからデータを受信
@@ -164,7 +161,7 @@ int main(void) {
 			}
 		}else{
 			// 相手の手を代入(追加事項、削除不可)
-			if(scrcmp(buffer2, "start") != 0){
+			if(strcmp(buffer2, "start") != 0){
 				sscanf(buffer2, "%d,%d", &row, &col);
 				row--;
 				col--;
@@ -172,8 +169,8 @@ int main(void) {
 			}
 			
 			// 禁じ手の判断(追加事項、削除不可)
-			if(Second){
-				const char Forbidden = "Yuor hands is Forbidden";
+			if(Advance == FALSE){
+				const char Forbidden[1024] = "Yuor hands is Forbidden";
 				send(s, Forbidden, strlen(Forbidden), 0);
 				break;
 			}
