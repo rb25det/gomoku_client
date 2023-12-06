@@ -6,24 +6,87 @@
 #define SIZE 15
 
 // 盤の初期化(追加条項、削除不可)
-void initializeBoard(char board[SIZE][SIZE]) {
+void initializeBoard(int board[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            board[i][j] = '0';
+            board[i][j] = 0;		//空いている場所を0に設定
         }
     }
 }
 
+//禁じ手判定(追加条項、削除不可)
+int checkForbiddenMoves(int board[SIZE][SIZE], char player, int row, int col){
+	return 0;
+}
+
 // 引き分け判定(追加条項、削除不可)
-int checkDraw(char board[SIZE][SIZE]) {
+int checkDraw(int board[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            if (board[i][j] == '0') {
+            if (board[i][j] == 0) {
                 return 0; // ボードがまだ埋まっていない
             }
         }
     }
     return 1; // ボードが埋まっている
+}
+
+//勝利判定(追加条項、削除不可)
+int checkWin(int board[SIZE][SIZE], int player, int row, int col) {
+    int consecutiveCount = 0;
+
+    // 横方向
+    for (int i = col - 4; i <= col + 4; i++) {
+        if (i < 0 || i >= SIZE) continue;
+        if (board[row][i] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 5) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    // 縦方向
+    consecutiveCount = 0;
+    for (int i = row - 4; i <= row + 4; i++) {
+        if (i < 0 || i >= SIZE) continue;
+        if (board[i][col] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 5) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    // 斜め方向 (左上から右下)
+    consecutiveCount = 0;
+    for (int i = -4; i <= 4; i++) {
+        int r = row + i;
+        int c = col + i;
+        if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) continue;
+        if (board[r][c] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 5) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    // 斜め方向 (右上から左下)
+    consecutiveCount = 0;
+    for (int i = -4; i <= 4; i++) {
+        int r = row + i;
+        int c = col - i;
+        if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) continue;
+        if (board[r][c] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 5) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    return 0; // 勝利なし
 }
 
 int main(void) {	
@@ -42,7 +105,7 @@ int main(void) {
 	printf("アドレスを入力してください");
 	scanf("%s", destination);
 	printf("ポート番号を入力してください");
-	scanf("%d", &port);  
+	scanf("%d", &port);
 	dest.sin_port = htons(port);
 	dest.sin_family = AF_INET;
 	dest.sin_addr.s_addr = inet_addr(destination);
@@ -65,10 +128,24 @@ int main(void) {
 	
 	char msg[1024];
 	char buffer[1024];
-	char board[SIZE][SIZE];
-	initializeBoard(board);
-	boolean isFirst = TRUE;
-	int row, col;
+	int board[SIZE][SIZE];	//盤の作成
+	initializeBoard(board);	//盤の初期化
+
+	boolean isFirst = TRUE;	//名前入力かどうかの判定
+	boolean Advance;		//先攻かどうか
+	boolean Second;			//後攻かどうか
+	int row, col;			//打った手の位置
+	char your = 1;		//自分の手を1に設定
+	char com = 2;			//相手の手を２に設定
+
+	//先攻か後攻か(追加条項、削除不可)
+	if(port == 12345){
+		Advance = TRUE;
+		Second = FALSE;
+	}else{
+		Advance = FALSE;
+		Second = TRUE;
+	}
 	
 	//サーバからデータを受信
 	recv(s, buffer, 1024, 0);
@@ -87,12 +164,19 @@ int main(void) {
 			}
 		}else{
 			// 相手の手を代入(追加事項、削除不可)
-			sscanf(buffer2, "%d,%d", &row, &col);
-			row--;
-			col--;
-			board[row][col] = '1';
-
+			if(scrcmp(buffer2, "start") != 0){
+				sscanf(buffer2, "%d,%d", &row, &col);
+				row--;
+				col--;
+				board[row][col] = com;
+			}
+			
 			// 禁じ手の判断(追加事項、削除不可)
+			if(Second){
+				const char Forbidden = "Yuor hands is Forbidden";
+				send(s, Forbidden, strlen(Forbidden), 0);
+				break;
+			}
 
 			// 引き分け判断(追加条項、削除不可)
 			if (checkDraw(board)) {
@@ -109,7 +193,7 @@ int main(void) {
 			}
 
 			//勝利判断(今後追加)
-
+			
 
 		}
 		//サーバにデータを送信
