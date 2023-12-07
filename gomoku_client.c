@@ -15,8 +15,65 @@ void initializeBoard(int board[SIZE][SIZE]) {
 }
 
 //禁じ手判定(追加条項、削除不可)
-int checkForbiddenMoves(int board[SIZE][SIZE], char player, int row, int col){
-	return 0;
+int checkForbiddenMoves(int board[SIZE][SIZE], int player, int row, int col){
+	int consecutiveCount;
+	//三三禁
+	
+	//四四禁
+
+	//長連
+	// 横方向
+    for (int i = col - 5; i <= col + 5; i++) {
+        if (i < 0 || i >= SIZE) continue;
+        if (board[row][i] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 6) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    // 縦方向
+    consecutiveCount = 0;
+    for (int i = row - 5; i <= row + 5; i++) {
+        if (i < 0 || i >= SIZE) continue;
+        if (board[i][col] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 6) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    // 斜め方向 (左上から右下)
+    consecutiveCount = 0;
+    for (int i = -5; i <= 5; i++) {
+        int r = row + i;
+        int c = col + i;
+        if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) continue;
+        if (board[r][c] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 6) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+    // 斜め方向 (右上から左下)
+    consecutiveCount = 0;
+    for (int i = -5; i <= 5; i++) {
+        int r = row + i;
+        int c = col - i;
+        if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) continue;
+        if (board[r][c] == player) {
+            consecutiveCount++;
+            if (consecutiveCount == 6) return 1; // 勝利
+        } else {
+            consecutiveCount = 0;
+        }
+    }
+
+	return 0;	//禁じ手なし
 }
 
 // 引き分け判定(追加条項、削除不可)
@@ -134,14 +191,14 @@ int main(void) {
 	boolean isFirst = TRUE;	//名前入力かどうかの判定
 	boolean Advance;		//先攻かどうか
 	int row, col;			//打った手の位置
-	char your = 1;		//自分の手を1に設定
-	char com = 2;			//相手の手を２に設定
+	int your = 1;			//自分の手を1に設定
+	int com = 2;			//相手の手を２に設定
 
 	//先攻か後攻か(追加条項、削除不可)
 	if(port == 12345){
-		Advance = TRUE;
+		Advance = TRUE;		//自身が先攻
 	}else{
-		Advance = FALSE;
+		Advance = FALSE;	//自身が後攻
 	}
 	
 	//サーバからデータを受信
@@ -169,7 +226,7 @@ int main(void) {
 			}
 			
 			// 禁じ手の判断(追加事項、削除不可)
-			if(Advance == FALSE){
+			if(Advance == FALSE && checkForbiddenMoves(board, com, row, col) == 1){
 				const char Forbidden[1024] = "Yuor hands is Forbidden";
 				send(s, Forbidden, strlen(Forbidden), 0);
 				break;
