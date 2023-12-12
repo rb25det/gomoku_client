@@ -14,20 +14,89 @@ void initializeBoard(int board[SIZE][SIZE]) {
     }
 }
 
+//３並び判定(追加条項、削除不可)
+int checkThreeBrock(int board[SIZE][SIZE], int row, int col, int gradient){
+    switch(gradient){
+        case 0:     //横
+            if((board[row][col-4] == 0 && board[row][col-3] == 1 && board[row][col-2] == 1 && board[row][col-1] == 0 && board[row][col+1] == 0) ||
+               (board[row][col-4] == 0 && board[row][col-3] == 1 && board[row][col-2] == 0 && board[row][col-1] == 1 && board[row][col+1] == 0) || 
+               (board[row][col-3] == 0 && board[row][col-2] == 1 && board[row][col-1] == 1 && board[row][col+1] == 0) ||
+               (board[row][col-3] == 0 && board[row][col-2] == 1 && board[row][col-1] == 0 && board[row][col+1] == 1 && board[row][col+2] == 0) ||
+               (board[row][col-2] == 0 && board[row][col-1] == 1 && board[row][col+1] == 0 && board[row][col+2] == 1 && board[row][col+3] == 0) ||
+               (board[row][col-2] == 0 && board[row][col-1] == 1 && board[row][col+1] == 1 && board[row][col+2] == 0) ||
+               (board[row][col-1] == 0 && board[row][col+1] == 1 && board[row][col+2] == 0 && board[row][col+3] == 1 && board[row][col+4] == 0) ||
+               (board[row][col-1] == 0 && board[row][col+1] == 0 && board[row][col+2] == 1 && board[row][col+3] == 1 && board[row][col+4] == 0) ||
+               (board[row][col-1] == 0 && board[row][col+1] == 1 && board[row][col+2] == 1 && board[row][col+3] == 0)) {
+                return 1;
+            }
+            break;
+        case 1:     //縦
+            if((board[row-4][col] == 0 && board[row-3][col] == 1 && board[row-2][col] == 1 && board[row-1][col] == 0 && board[row+1][col] == 0) ||
+               (board[row-4][col] == 0 && board[row-3][col] == 1 && board[row-2][col] == 0 && board[row-1][col] == 1 && board[row+1][col] == 0) || 
+               (board[row-3][col] == 0 && board[row-2][col] == 1 && board[row-1][col] == 1 && board[row+1][col] == 0) ||
+               (board[row-3][col] == 0 && board[row-2][col] == 1 && board[row-1][col] == 0 && board[row+1][col] == 1 && board[row+2][col] == 0) ||
+               (board[row-2][col] == 0 && board[row-1][col] == 1 && board[row+1][col] == 0 && board[row+2][col] == 1 && board[row+3][col] == 0) ||
+               (board[row-2][col] == 0 && board[row-1][col] == 1 && board[row+1][col] == 1 && board[row+2][col] == 0) ||
+               (board[row-1][col] == 0 && board[row+1][col] == 1 && board[row+2][col] == 0 && board[row+3][col] == 1 && board[row+4][col] == 0) ||
+               (board[row-1][col] == 0 && board[row+1][col] == 0 && board[row+2][col] == 1 && board[row+3][col] == 1 && board[row+4][col] == 0) ||
+               (board[row-1][col] == 0 && board[row+1][col] == 1 && board[row+2][col] == 1 && board[row+3][col] == 0)) {
+                return 1;
+            }
+            break;
+        case 2:     //左上から右下
+            if((board[row-4][col-4] == 0 && board[row-3][col-3] == 1 && board[row-2][col-2] == 1 && board[row-1][col-1] == 0 && board[row+1][col+1] == 0) ||
+               (board[row-4][col-4] == 0 && board[row-3][col-3] == 1 && board[row-2][col-2] == 0 && board[row-1][col-1] == 1 && board[row+1][col+1] == 0) || 
+               (board[row-3][col-3] == 0 && board[row-2][col-2] == 1 && board[row-1][col-1] == 1 && board[row+1][col+1] == 0) ||
+               (board[row-3][col-3] == 0 && board[row-2][col-2] == 1 && board[row-1][col-1] == 0 && board[row+1][col+1] == 1 && board[row+2][col+2] == 0) ||
+               (board[row-2][col-2] == 0 && board[row-1][col-1] == 1 && board[row+1][col+1] == 0 && board[row+2][col+2] == 1 && board[row+3][col+3] == 0) ||
+               (board[row-2][col-2] == 0 && board[row-1][col-1] == 1 && board[row+1][col+1] == 1 && board[row+2][col+2] == 0) ||
+               (board[row-1][col-1] == 0 && board[row+1][col+1] == 1 && board[row+2][col+2] == 0 && board[row+3][col+3] == 1 && board[row+4][col+4] == 0) ||
+               (board[row-1][col-1] == 0 && board[row+1][col+1] == 0 && board[row+2][col+2] == 1 && board[row+3][col+3] == 1 && board[row+4][col+4] == 0) ||
+               (board[row-1][col-1] == 0 && board[row+1][col+1] == 1 && board[row+2][col+2] == 1 && board[row+3][col+3] == 0)) {
+                return 1;
+            }
+            break;
+        case 3:     //右上から左下
+            if((board[row+4][col-4] == 0 && board[row+3][col-3] == 1 && board[row+2][col-2] == 1 && board[row+1][col-1] == 0 && board[row-1][col+1] == 0) ||
+               (board[row+4][col-4] == 0 && board[row+3][col-3] == 1 && board[row+2][col-2] == 0 && board[row+1][col-1] == 1 && board[row-1][col+1] == 0) || 
+               (board[row+3][col-3] == 0 && board[row+2][col-2] == 1 && board[row+1][col-1] == 1 && board[row-1][col+1] == 0) ||
+               (board[row+3][col-3] == 0 && board[row+2][col-2] == 1 && board[row+1][col-1] == 0 && board[row-1][col+1] == 1 && board[row-2][col+2] == 0) ||
+               (board[row+2][col-2] == 0 && board[row+1][col-1] == 1 && board[row-1][col+1] == 0 && board[row-2][col+2] == 1 && board[row-3][col+3] == 0) ||
+               (board[row+2][col-2] == 0 && board[row+1][col-1] == 1 && board[row-1][col+1] == 1 && board[row-2][col+2] == 0) ||
+               (board[row+1][col-1] == 0 && board[row-1][col+1] == 1 && board[row-2][col+2] == 0 && board[row-3][col+3] == 1 && board[row-4][col+4] == 0) ||
+               (board[row+1][col-1] == 0 && board[row-1][col+1] == 0 && board[row-2][col+2] == 1 && board[row-3][col+3] == 1 && board[row-4][col+4] == 0) ||
+               (board[row+1][col-1] == 0 && board[row-1][col+1] == 1 && board[row-2][col+2] == 1 && board[row-3][col+3] == 0)) {
+                return 1;
+            }
+            break;
+        default:
+            break;
+    }
+
+    return 0;
+}
+
 //禁じ手判定(追加条項、削除不可)
-int checkForbiddenMoves(int board[SIZE][SIZE], int player, int row, int col){
-	int consecutiveCount;
+int checkForbiddenMoves(int board[SIZE][SIZE], int FstPlayer, int SecPlayer, int row, int col){
+	int consecutiveCount = 0;
 	//三三禁
-	
+    for(int i = 0; i < 4; i++){
+        if(checkThreeBrock(board, row, col, i)){
+            consecutiveCount++;
+        }
+    }
+    if(consecutiveCount >=2) return 1; //禁じ手
+
 	//四四禁
 
 	//長連
 	// 横方向
+    consecutiveCount = 0;
     for (int i = col - 5; i <= col + 5; i++) {
         if (i < 0 || i >= SIZE) continue;
-        if (board[row][i] == player) {
+        if (board[row][i] == FstPlayer) {
             consecutiveCount++;
-            if (consecutiveCount == 6) return 1; // 勝利
+            if (consecutiveCount == 6) return 1; //禁じ手
         } else {
             consecutiveCount = 0;
         }
@@ -37,9 +106,9 @@ int checkForbiddenMoves(int board[SIZE][SIZE], int player, int row, int col){
     consecutiveCount = 0;
     for (int i = row - 5; i <= row + 5; i++) {
         if (i < 0 || i >= SIZE) continue;
-        if (board[i][col] == player) {
+        if (board[i][col] == FstPlayer) {
             consecutiveCount++;
-            if (consecutiveCount == 6) return 1; // 勝利
+            if (consecutiveCount == 6) return 1; //禁じ手
         } else {
             consecutiveCount = 0;
         }
@@ -51,9 +120,9 @@ int checkForbiddenMoves(int board[SIZE][SIZE], int player, int row, int col){
         int r = row + i;
         int c = col + i;
         if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) continue;
-        if (board[r][c] == player) {
+        if (board[r][c] == FstPlayer) {
             consecutiveCount++;
-            if (consecutiveCount == 6) return 1; // 勝利
+            if (consecutiveCount == 6) return 1; //禁じ手
         } else {
             consecutiveCount = 0;
         }
@@ -65,9 +134,9 @@ int checkForbiddenMoves(int board[SIZE][SIZE], int player, int row, int col){
         int r = row + i;
         int c = col - i;
         if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) continue;
-        if (board[r][c] == player) {
+        if (board[r][c] == FstPlayer) {
             consecutiveCount++;
-            if (consecutiveCount == 6) return 1; // 勝利
+            if (consecutiveCount == 6) return 1; //禁じ手
         } else {
             consecutiveCount = 0;
         }
@@ -226,7 +295,7 @@ int main(void) {
 			}
 			
 			// 禁じ手の判断(追加事項、削除不可)
-			if(Advance == FALSE && checkForbiddenMoves(board, com, row, col) == 1){
+			if(Advance == FALSE && checkForbiddenMoves(board, com, your, row, col) == 1){
 				const char Forbidden[1024] = "Yuor hands is Forbidden";
 				send(s, Forbidden, strlen(Forbidden), 0);
 				break;
