@@ -1,4 +1,5 @@
 //http://blog.livedoor.jp/akf0/archives/51585502.html
+//-lws2_32
 
 #include <stdio.h>
 #include <winsock2.h>
@@ -284,18 +285,18 @@ int main(void) {
 	initializeBoard(board);	//盤の初期化
 
 	boolean isFirst = TRUE;	//名前入力かどうかの判定
-	boolean Advance;		//先攻かどうか
+	int Advance;		//先攻かどうか
 	int row, col;			//打った手の位置
 	int your = 1;			//自分の手を1に設定
 	int com = 2;			//相手の手を２に設定
 
 	//先攻か後攻か(追加条項、削除不可)
 	if(port == 12345){
-		Advance = TRUE;		//自身が先攻
+		Advance = your;		//自身が先攻
 	}else{
-		Advance = FALSE;	//自身が後攻
+		Advance = com;	//自身が後攻
 	}
-	
+
 	//サーバからデータを受信
 	recv(s, buffer, 1024, 0);
 	printf("→ %s\n\n", buffer);
@@ -311,17 +312,18 @@ int main(void) {
 			if(msg[0] == 'q' || msg[0] == 'Q'){
 				break;
 			}
+            isFirst = FALSE;
 		}else{
 			// 相手の手を代入(追加事項、削除不可)
 			if(strcmp(buffer2, "start") != 0){
-				sscanf(buffer2, "%d,%d", &row, &col);
+                sscanf(buffer2, "%d,%d", &row, &col);
 				row--;
 				col--;
 				board[row][col] = com;
 			}
 			
 			// 禁じ手の判断(追加事項、削除不可)
-			if(Advance == FALSE && checkForbiddenMoves(board, com, your, row, col) == 1){
+			if(Advance == com && checkForbiddenMoves(board, com, your, row, col) == 1){
 				const char Forbidden[1024] = "Yuor hands is Forbidden";
 				send(s, Forbidden, strlen(Forbidden), 0);
 				break;
