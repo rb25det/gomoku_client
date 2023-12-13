@@ -15,57 +15,77 @@ void initializeBoard(int board[SIZE][SIZE]) {
 }
 
 //３並び判定(追加条項、削除不可)
-int checkThreeBrock(int board[SIZE][SIZE], int row, int col, int gradient){
+int checkThreeBrock(int board[SIZE][SIZE], int FstPlayer, int SecPlayer, int row, int col, int gradient){
     switch(gradient){
         case 0:     //横
-            if((board[row][col-4] == 0 && board[row][col-3] == 1 && board[row][col-2] == 1 && board[row][col-1] == 0 && board[row][col+1] == 0) ||
-               (board[row][col-4] == 0 && board[row][col-3] == 1 && board[row][col-2] == 0 && board[row][col-1] == 1 && board[row][col+1] == 0) || 
-               (board[row][col-3] == 0 && board[row][col-2] == 1 && board[row][col-1] == 1 && board[row][col+1] == 0) ||
-               (board[row][col-3] == 0 && board[row][col-2] == 1 && board[row][col-1] == 0 && board[row][col+1] == 1 && board[row][col+2] == 0) ||
-               (board[row][col-2] == 0 && board[row][col-1] == 1 && board[row][col+1] == 0 && board[row][col+2] == 1 && board[row][col+3] == 0) ||
-               (board[row][col-2] == 0 && board[row][col-1] == 1 && board[row][col+1] == 1 && board[row][col+2] == 0) ||
-               (board[row][col-1] == 0 && board[row][col+1] == 1 && board[row][col+2] == 0 && board[row][col+3] == 1 && board[row][col+4] == 0) ||
-               (board[row][col-1] == 0 && board[row][col+1] == 0 && board[row][col+2] == 1 && board[row][col+3] == 1 && board[row][col+4] == 0) ||
-               (board[row][col-1] == 0 && board[row][col+1] == 1 && board[row][col+2] == 1 && board[row][col+3] == 0)) {
+            if((board[row][col-4] == SecPlayer && board[row][col-3] == 0 && board[row][col-2] == FstPlayer && board[row][col-1] == FstPlayer && board[row][col+1] == 0 && board[row][col+2] == SecPlayer) ||
+               (board[row][col-3] == SecPlayer && board[row][col-2] == 0 && board[row][col-1] == FstPlayer && board[row][col+1] == FstPlayer && board[row][col+2] == 0 && board[row][col+3] == SecPlayer) ||
+               (board[row][col-2] == SecPlayer && board[row][col-1] == 0 && board[row][col+1] == FstPlayer && board[row][col+2] == FstPlayer && board[row][col+3] == 0 && board[row][col+4] == SecPlayer)){
+                return 0;
+            }
+            if((board[row][col-4] == 0 && board[row][col-3] == FstPlayer && board[row][col-2] == FstPlayer && board[row][col-1] == 0 && board[row][col+1] == 0) ||
+               (board[row][col-4] == 0 && board[row][col-3] == FstPlayer && board[row][col-2] == 0 && board[row][col-1] == FstPlayer && board[row][col+1] == 0) || 
+               (board[row][col-4] == 0 && board[row][col-3] == 0 && board[row][col-2] == FstPlayer && board[row][col-1] == FstPlayer && board[row][col+1] == 0 && board[row][col+2] == 0) ||
+               (board[row][col-3] == 0 && board[row][col-2] == FstPlayer && board[row][col-1] == 0 && board[row][col+1] == FstPlayer && board[row][col+2] == 0) ||
+               (board[row][col-2] == 0 && board[row][col-1] == FstPlayer && board[row][col+1] == 0 && board[row][col+2] == FstPlayer && board[row][col+3] == 0) ||
+               (board[row][col-3] == 0 && board[row][col-2] == 0 && board[row][col-1] == FstPlayer && board[row][col+1] == FstPlayer && board[row][col+2] == 0 && board[row][col+3] == 0) ||
+               (board[row][col-1] == 0 && board[row][col+1] == FstPlayer && board[row][col+2] == 0 && board[row][col+3] == FstPlayer && board[row][col+4] == 0) ||
+               (board[row][col-1] == 0 && board[row][col+1] == 0 && board[row][col+2] == FstPlayer && board[row][col+3] == FstPlayer && board[row][col+4] == 0) ||
+               (board[row][col-2] == 0 && board[row][col-1] == 0 && board[row][col+1] == FstPlayer && board[row][col+2] == FstPlayer && board[row][col+3] == 0 && board[row][col+4] == 0)) {
                 return 1;
             }
             break;
         case 1:     //縦
-            if((board[row-4][col] == 0 && board[row-3][col] == 1 && board[row-2][col] == 1 && board[row-1][col] == 0 && board[row+1][col] == 0) ||
-               (board[row-4][col] == 0 && board[row-3][col] == 1 && board[row-2][col] == 0 && board[row-1][col] == 1 && board[row+1][col] == 0) || 
-               (board[row-3][col] == 0 && board[row-2][col] == 1 && board[row-1][col] == 1 && board[row+1][col] == 0) ||
-               (board[row-3][col] == 0 && board[row-2][col] == 1 && board[row-1][col] == 0 && board[row+1][col] == 1 && board[row+2][col] == 0) ||
-               (board[row-2][col] == 0 && board[row-1][col] == 1 && board[row+1][col] == 0 && board[row+2][col] == 1 && board[row+3][col] == 0) ||
-               (board[row-2][col] == 0 && board[row-1][col] == 1 && board[row+1][col] == 1 && board[row+2][col] == 0) ||
-               (board[row-1][col] == 0 && board[row+1][col] == 1 && board[row+2][col] == 0 && board[row+3][col] == 1 && board[row+4][col] == 0) ||
-               (board[row-1][col] == 0 && board[row+1][col] == 0 && board[row+2][col] == 1 && board[row+3][col] == 1 && board[row+4][col] == 0) ||
-               (board[row-1][col] == 0 && board[row+1][col] == 1 && board[row+2][col] == 1 && board[row+3][col] == 0)) {
+            if((board[row-4][col] == SecPlayer && board[row-3][col] == 0 && board[row-2][col] == FstPlayer && board[row-1][col] == FstPlayer && board[row+1][col] == 0 && board[row+2][col] == SecPlayer) ||
+               (board[row-3][col] == SecPlayer && board[row-2][col] == 0 && board[row-1][col] == FstPlayer && board[row+1][col] == FstPlayer && board[row+2][col] == 0 && board[row+3][col] == SecPlayer) ||
+               (board[row-2][col] == SecPlayer && board[row-1][col] == 0 && board[row+1][col] == FstPlayer && board[row+2][col] == FstPlayer && board[row+3][col] == 0 && board[row+4][col] == SecPlayer)){
+                return 0;
+            }
+            if((board[row-4][col] == 0 && board[row-3][col] == FstPlayer && board[row-2][col] == FstPlayer && board[row-1][col] == 0 && board[row+1][col] == 0) ||
+               (board[row-4][col] == 0 && board[row-3][col] == FstPlayer && board[row-2][col] == 0 && board[row-1][col] == FstPlayer && board[row+1][col] == 0) || 
+               (board[row-4][col] == 0 && board[row-3][col] == 0 && board[row-2][col] == FstPlayer && board[row-1][col] == FstPlayer && board[row+1][col] == 0 && board[row+2][col] == 0) ||
+               (board[row-3][col] == 0 && board[row-2][col] == FstPlayer && board[row-1][col] == 0 && board[row+1][col] == FstPlayer && board[row+2][col] == 0) ||
+               (board[row-2][col] == 0 && board[row-1][col] == FstPlayer && board[row+1][col] == 0 && board[row+2][col] == FstPlayer && board[row+3][col] == 0) ||
+               (board[row-3][col] == 0 && board[row-2][col] == 0 && board[row-1][col] == FstPlayer && board[row+1][col] == FstPlayer && board[row+2][col] == 0 && board[row+3][col] == 0) ||
+               (board[row-1][col] == 0 && board[row+1][col] == FstPlayer && board[row+2][col] == 0 && board[row+3][col] == FstPlayer && board[row+4][col] == 0) ||
+               (board[row-1][col] == 0 && board[row+1][col] == 0 && board[row+2][col] == FstPlayer && board[row+3][col] == FstPlayer && board[row+4][col] == 0) ||
+               (board[row-2][col] == 0 && board[row-1][col] == 0 && board[row+1][col] == FstPlayer && board[row+2][col] == FstPlayer && board[row+3][col] == 0 && board[row+4][col] == 0)) {
                 return 1;
             }
             break;
         case 2:     //左上から右下
-            if((board[row-4][col-4] == 0 && board[row-3][col-3] == 1 && board[row-2][col-2] == 1 && board[row-1][col-1] == 0 && board[row+1][col+1] == 0) ||
-               (board[row-4][col-4] == 0 && board[row-3][col-3] == 1 && board[row-2][col-2] == 0 && board[row-1][col-1] == 1 && board[row+1][col+1] == 0) || 
-               (board[row-3][col-3] == 0 && board[row-2][col-2] == 1 && board[row-1][col-1] == 1 && board[row+1][col+1] == 0) ||
-               (board[row-3][col-3] == 0 && board[row-2][col-2] == 1 && board[row-1][col-1] == 0 && board[row+1][col+1] == 1 && board[row+2][col+2] == 0) ||
-               (board[row-2][col-2] == 0 && board[row-1][col-1] == 1 && board[row+1][col+1] == 0 && board[row+2][col+2] == 1 && board[row+3][col+3] == 0) ||
-               (board[row-2][col-2] == 0 && board[row-1][col-1] == 1 && board[row+1][col+1] == 1 && board[row+2][col+2] == 0) ||
-               (board[row-1][col-1] == 0 && board[row+1][col+1] == 1 && board[row+2][col+2] == 0 && board[row+3][col+3] == 1 && board[row+4][col+4] == 0) ||
-               (board[row-1][col-1] == 0 && board[row+1][col+1] == 0 && board[row+2][col+2] == 1 && board[row+3][col+3] == 1 && board[row+4][col+4] == 0) ||
-               (board[row-1][col-1] == 0 && board[row+1][col+1] == 1 && board[row+2][col+2] == 1 && board[row+3][col+3] == 0)) {
+            if((board[row-4][col-4] == SecPlayer && board[row-3][col-3] == 0 && board[row-2][col-2] == FstPlayer && board[row-1][col-1] == FstPlayer && board[row+1][col+1] == 0 && board[row+2][col+2] == SecPlayer) ||
+               (board[row-3][col-3] == SecPlayer && board[row-2][col-2] == 0 && board[row-1][col-1] == FstPlayer && board[row+1][col+1] == FstPlayer && board[row+2][col+2] == 0 && board[row+3][col+3] == SecPlayer) ||
+               (board[row-2][col-2] == SecPlayer && board[row-1][col-1] == 0 && board[row+1][col+1] == FstPlayer && board[row+2][col+2] == FstPlayer && board[row+3][col+3] == 0 && board[row+4][col+4] == SecPlayer)){
+                return 0;
+            }
+            if((board[row-4][col-4] == 0 && board[row-3][col-3] == FstPlayer && board[row-2][col-2] == FstPlayer && board[row-1][col-1] == 0 && board[row+1][col+1] == 0) ||
+               (board[row-4][col-4] == 0 && board[row-3][col-3] == FstPlayer && board[row-2][col-2] == 0 && board[row-1][col-1] == FstPlayer && board[row+1][col+1] == 0) || 
+               (board[row-4][col-4] == 0 && board[row-3][col-3] == 0 && board[row-2][col-2] == FstPlayer && board[row-1][col-1] == FstPlayer && board[row+1][col+1] == 0 && board[row+2][col+2] == 0) ||
+               (board[row-3][col-3] == 0 && board[row-2][col-2] == FstPlayer && board[row-1][col-1] == 0 && board[row+1][col+1] == FstPlayer && board[row+2][col+2] == 0) ||
+               (board[row-2][col-2] == 0 && board[row-1][col-1] == FstPlayer && board[row+1][col+1] == 0 && board[row+2][col+2] == FstPlayer && board[row+3][col+3] == 0) ||
+               (board[row-3][col-3] == 0 && board[row-2][col-2] == 0 && board[row-1][col-1] == FstPlayer && board[row+1][col+1] == FstPlayer && board[row+2][col+2] == 0 && board[row+3][col+3] == 0) ||
+               (board[row-1][col-1] == 0 && board[row+1][col+1] == FstPlayer && board[row+2][col+2] == 0 && board[row+3][col+3] == FstPlayer && board[row+4][col+4] == 0) ||
+               (board[row-1][col-1] == 0 && board[row+1][col+1] == 0 && board[row+2][col+2] == FstPlayer && board[row+3][col+3] == FstPlayer && board[row+4][col+4] == 0) ||
+               (board[row-2][col-2] == 0 && board[row-1][col-1] == 0 && board[row+1][col+1] == FstPlayer && board[row+2][col+2] == FstPlayer && board[row+3][col+3] == 0 && board[row+4][col+4] == 0)) {
                 return 1;
             }
             break;
         case 3:     //右上から左下
-            if((board[row+4][col-4] == 0 && board[row+3][col-3] == 1 && board[row+2][col-2] == 1 && board[row+1][col-1] == 0 && board[row-1][col+1] == 0) ||
-               (board[row+4][col-4] == 0 && board[row+3][col-3] == 1 && board[row+2][col-2] == 0 && board[row+1][col-1] == 1 && board[row-1][col+1] == 0) || 
-               (board[row+3][col-3] == 0 && board[row+2][col-2] == 1 && board[row+1][col-1] == 1 && board[row-1][col+1] == 0) ||
-               (board[row+3][col-3] == 0 && board[row+2][col-2] == 1 && board[row+1][col-1] == 0 && board[row-1][col+1] == 1 && board[row-2][col+2] == 0) ||
-               (board[row+2][col-2] == 0 && board[row+1][col-1] == 1 && board[row-1][col+1] == 0 && board[row-2][col+2] == 1 && board[row-3][col+3] == 0) ||
-               (board[row+2][col-2] == 0 && board[row+1][col-1] == 1 && board[row-1][col+1] == 1 && board[row-2][col+2] == 0) ||
-               (board[row+1][col-1] == 0 && board[row-1][col+1] == 1 && board[row-2][col+2] == 0 && board[row-3][col+3] == 1 && board[row-4][col+4] == 0) ||
-               (board[row+1][col-1] == 0 && board[row-1][col+1] == 0 && board[row-2][col+2] == 1 && board[row-3][col+3] == 1 && board[row-4][col+4] == 0) ||
-               (board[row+1][col-1] == 0 && board[row-1][col+1] == 1 && board[row-2][col+2] == 1 && board[row-3][col+3] == 0)) {
+            if((board[row+4][col-4] == SecPlayer && board[row+3][col-3] == 0 && board[row+2][col-2] == FstPlayer && board[row+1][col-1] == FstPlayer && board[row-1][col+1] == 0 && board[row-2][col+2] == SecPlayer) ||
+               (board[row+3][col-3] == SecPlayer && board[row+2][col-2] == 0 && board[row+1][col-1] == FstPlayer && board[row-1][col+1] == FstPlayer && board[row-2][col+2] == 0 && board[row-3][col+3] == SecPlayer) ||
+               (board[row+2][col-2] == SecPlayer && board[row+1][col-1] == 0 && board[row-1][col+1] == FstPlayer && board[row-2][col+2] == FstPlayer && board[row-3][col+3] == 0 && board[row-4][col+4] == SecPlayer)){
+                return 0;
+            }
+            if((board[row+4][col-4] == 0 && board[row+3][col-3] == FstPlayer && board[row+2][col-2] == FstPlayer && board[row+1][col-1] == 0 && board[row-1][col+1] == 0) ||
+               (board[row+4][col-4] == 0 && board[row+3][col-3] == FstPlayer && board[row+2][col-2] == 0 && board[row+1][col-1] == FstPlayer && board[row-1][col+1] == 0) || 
+               (board[row+4][col-4] == 0 && board[row+3][col-3] == 0 && board[row+2][col-2] == FstPlayer && board[row+1][col-1] == FstPlayer && board[row-1][col+1] == 0 && board[row-2][col+2] == 0) ||
+               (board[row+3][col-3] == 0 && board[row+2][col-2] == FstPlayer && board[row+1][col-1] == 0 && board[row-1][col+1] == FstPlayer && board[row-2][col+2] == 0) ||
+               (board[row+2][col-2] == 0 && board[row+1][col-1] == FstPlayer && board[row-1][col+1] == 0 && board[row-2][col+2] == FstPlayer && board[row-3][col+3] == 0) ||
+               (board[row+3][col-3] == 0 && board[row+2][col-2] == 0 && board[row+1][col-1] == FstPlayer && board[row-1][col+1] == FstPlayer && board[row-2][col+2] == 0 && board[row-3][col+3] == 0) ||
+               (board[row+1][col-1] == 0 && board[row-1][col+1] == FstPlayer && board[row-2][col+2] == 0 && board[row-3][col+3] == FstPlayer && board[row-4][col+4] == 0) ||
+               (board[row+1][col-1] == 0 && board[row-1][col+1] == 0 && board[row-2][col+2] == FstPlayer && board[row-3][col+3] == FstPlayer && board[row-4][col+4] == 0) ||
+               (board[row+2][col-2] == 0 && board[row+1][col-1] == 0 && board[row-1][col+1] == FstPlayer && board[row-2][col+2] == FstPlayer && board[row-3][col+3] == 0 && board[row-4][col+4] == 0)) {
                 return 1;
             }
             break;
@@ -76,12 +96,17 @@ int checkThreeBrock(int board[SIZE][SIZE], int row, int col, int gradient){
     return 0;
 }
 
+//4並び判定(追加条項、削除不可)
+int checkFourBrock(int board[SIZE][SIZE], int FstPlayer, int SecPlayer, int row, int col, int gradient){
+    
+}
+
 //禁じ手判定(追加条項、削除不可)
 int checkForbiddenMoves(int board[SIZE][SIZE], int FstPlayer, int SecPlayer, int row, int col){
 	int consecutiveCount = 0;
 	//三三禁
     for(int i = 0; i < 4; i++){
-        if(checkThreeBrock(board, row, col, i)){
+        if(checkThreeBrock(board,FstPlayer, SecPlayer, row, col, i)){
             consecutiveCount++;
         }
     }
